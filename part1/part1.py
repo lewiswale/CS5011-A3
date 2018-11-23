@@ -3,11 +3,20 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.externals import joblib
 import pandas as pd
 
-clf = MLPClassifier(solver='sgd', learning_rate_init=0.5, hidden_layer_sizes=(10,), verbose=True, momentum=0.3,
+clf = MLPClassifier(solver='sgd', learning_rate_init=0.5, hidden_layer_sizes=(5,), verbose=True, momentum=0.3,
                     activation='logistic', n_iter_no_change=5000, max_iter=10000)
 
-X = pd.read_csv(r"../trip.csv", usecols=[0, 1, 2, 3, 4, 5, 6, 7])
-df_countries = pd.read_csv(r"../trip.csv", usecols=[8])
+file_to_use = '../trip2.csv'
+
+full_file = pd.read_csv(file_to_use)
+
+column_count = len(full_file.columns)
+print(column_count)
+
+X_cols = [i for i in range(0, column_count-1)]
+
+X = pd.read_csv(file_to_use, usecols=X_cols)
+df_countries = pd.read_csv(file_to_use, usecols=[column_count-1])
 
 print(X)
 print(df_countries)

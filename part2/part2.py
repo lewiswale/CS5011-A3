@@ -82,17 +82,23 @@ def make_guess(answers, enc, clf, column_count):
 
     to_predict = [current_answers]
     prediction = enc.inverse_transform(clf.predict(to_predict))[0][0]
-    print("I think your dream destination is " + prediction)
-    is_correct = input("Am I correct? ")
 
-    if is_correct == "y":
-        print("Hooray!")
-        sys.exit(1)
-    elif is_correct == "n":
-        if diff != 0:
-            print("Oh dear. Let's continue...")
-        else:
-            print("Uh oh. I guess I don't know!")
+    if prediction != None:
+        print("I think your dream destination is " + prediction)
+        is_correct = input("Am I correct? ")
+
+        if is_correct == "y":
+            print("Hooray!")
+            sys.exit(1)
+        elif is_correct == "n":
+            if diff != 0:
+                print("Oh dear. Let's continue...")
+            else:
+                print("Uh oh. I guess I don't know!")
+    else:
+        print("\nI have no guess.")
+        if diff > 0:
+            print("Let's continue!\n")
 
 
 if __name__ == "__main__":

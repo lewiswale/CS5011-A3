@@ -40,15 +40,15 @@ encoded_countries = enc.transform(df_countries).toarray()
 # print(encoded_countries)
 print("Data encoded.")
 
-X_train, X_test = X[:50], X[50:]
-y_train, y_test = encoded_countries[:50], encoded_countries[50:]
+# X_train, X_test = X[:50], X[50:]
+# y_train, y_test = encoded_countries[:50], encoded_countries[50:]
 
 print("\nTraining...")
-clf.fit(X_train.as_matrix(), y_train)
+clf.fit(X.as_matrix(), encoded_countries)
 
-print('\nTESTING')
-print("Training score: %f" % clf.score(X_train.as_matrix(), y_train))
-print("Testing score: %f" % clf.score(X_test.as_matrix(), y_test))
+# print('\nTESTING')
+# print("Training score: %f" % clf.score(X_train.as_matrix(), y_train))
+# print("Testing score: %f" % clf.score(X_test.as_matrix(), y_test))
 
 model_name = sys.argv[1][:-4]
 print("\nSaving model as " + model_name + ".joblib")

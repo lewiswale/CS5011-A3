@@ -30,7 +30,7 @@ def ask_user():
     enc.fit_transform(df_countries).toarray()
 
     answers = []
-
+    count = 0
     for column in df.columns:
         if column == "Dream Location":
             continue
@@ -45,7 +45,8 @@ def ask_user():
             elif answer == "N" or answer == "n":
                 answers.append(0)
 
-        if column == "Seaside":
+        count = count + 1
+        if count == column_count // 2:
             make_guess(answers, enc, clf, column_count, file_to_use)
 
     make_guess(answers, enc, clf, column_count, file_to_use)
@@ -60,8 +61,6 @@ def make_guess(answers, enc, clf, column_count, file_to_use):
             current_answers.append(0)
 
     to_predict = [current_answers]
-    clf_pred = clf.predict(to_predict)
-    print(clf_pred)
     prediction = enc.inverse_transform(clf.predict(to_predict))[0][0]
 
     if prediction != None:

@@ -32,7 +32,7 @@ def train_classifier(file_to_use):
     print("\nTraining...")
     clf.fit(X.as_matrix(), encoded_countries)
 
-    print("Training score: %f" % clf.score(X.as_matrix(), encoded_countries))
+    print("\nTraining score: %f" % clf.score(X.as_matrix(), encoded_countries))
 
     model_name = sys.argv[1][:-4]
     print("\nSaving model as " + model_name + ".joblib")

@@ -19,10 +19,7 @@ def ask_user():
 
     clf = MLPClassifier()
 
-    if file_to_use == "../trip.csv":
-        clf = joblib.load("../part1/trip.joblib")
-    elif file_to_use == "../trip2.csv":
-        clf = joblib.load("../part1/trip2.joblib")
+    clf = joblib.load(file_to_use[:-4] + ".joblib")
 
     # print(clf)
 
@@ -32,30 +29,12 @@ def ask_user():
     enc.fit_transform(df_countries).toarray()
 
     answers = []
-
-    # print(df.columns)
-
+    count = 0
     for column in df.columns:
-        if column == "Short Stay":
-            print("Would you only be staying for a short amount of time?")
-        elif column == "Penguins":
-            print("Is your dream location inhabited by penguins?")
-        elif column == "Longest rivers":
-            print("Does your dream location contain some of the worlds longest rivers?")
-        elif column == "Island":
-            print("Is your dream destination an island?")
-        elif column == "Seaside":
-            print("Is your dream destination known for its beaches?")
-        elif column == "Historical":
-            print("Is your dream location known for its rich history?")
-        elif column == "Speaking Spanish":
-            print("Is the national language of your dream location Spanish?")
-        elif column == "Food":
-            print("Is your dream destination known for its exotic cuisine?")
-        elif column == "In Europe":
-            print("Is your dream destination located within Europe?")
-        else:
+        if column == "Dream Location":
             continue
+        else:
+            print(column + "?")
 
         answer = ""
         while answer != "y" and answer != "Y" and answer != "n" and answer != "N":
@@ -65,8 +44,8 @@ def ask_user():
             elif answer == "N" or answer == "n":
                 answers.append(0)
 
-        # print(answers)
-        if column == "Seaside":
+        count = count + 1
+        if count == column_count // 2:
             make_guess(answers, enc, clf, column_count)
 
     make_guess(answers, enc, clf, column_count)
@@ -94,7 +73,7 @@ def make_guess(answers, enc, clf, column_count):
             if diff != 0:
                 print("Oh dear. Let's continue...")
             else:
-                print("Uh oh. I guess I don't know!")
+                print("That's a shame.")
     else:
         print("\nI have no guess.")
         if diff > 0:

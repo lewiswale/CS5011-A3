@@ -128,6 +128,18 @@ def update_data(answers, file_to_use, column_count):
     part1.train_classifier(file_to_use)
     print("\nClassifier retrained...")
 
+def update_additions(dream_dest, new_feature, file_to_use):
+    additions_data = pd.read_csv("../additions.csv")
+    new_entry = [dream_dest, "Location", file_to_use]
+    new_row = pd.DataFrame([new_entry], columns=additions_data.columns)
+    additions_data = additions_data.append(new_row, ignore_index=True)
+
+    if new_feature != "":
+        new_entry = [new_feature, "Feature", file_to_use]
+        new_row = pd.DataFrame([new_entry], columns=additions_data.columns)
+        additions_data = additions_data.append(new_row, ignore_index=True)
+
+    additions_data.to_csv("../additions.csv", index=False)
 
 if __name__ == "__main__":
     ask_user()

@@ -8,25 +8,21 @@ from sklearn.externals import joblib
 def ask_user():
     if len(sys.argv) == 2:
         file_to_use = str("../" + sys.argv[1])
-        print("File to use: " + file_to_use)
 
-        df = pd.read_csv(file_to_use)
+        df = pd.read_csv(file_to_use)       #Reading given file
 
-        # print(df)
     else:
         print("Please give a file.")
         sys.exit(1)
 
     clf = MLPClassifier()
 
-    clf = joblib.load(file_to_use[:-4] + ".joblib")
-
-    # print(clf)
+    clf = joblib.load(file_to_use[:-4] + ".joblib")     #Loading classifier trained on given file
 
     enc = OneHotEncoder(handle_unknown='ignore')
     column_count = len(df.columns)
     df_countries = pd.read_csv(file_to_use, usecols=[column_count-1])
-    enc.fit_transform(df_countries).toarray()
+    enc.fit_transform(df_countries).toarray()           #Encoding locations for decoding predicition
 
     answers = []
     count = 0
@@ -34,7 +30,7 @@ def ask_user():
         if column == "Dream Location":
             continue
         else:
-            print(column + "?")
+            print(column + "?")     #Asking questions
 
         answer = ""
         while answer != "y" and answer != "Y" and answer != "n" and answer != "N":
@@ -55,12 +51,12 @@ def make_guess(answers, enc, clf, column_count):
     current_answers = answers.copy()
     diff = column_count - 1 - len(current_answers)
 
-    if diff > 0:
+    if diff > 0:                #If  not all questions answered, floods list with 0's
         for i in range(diff):
             current_answers.append(0)
 
     to_predict = [current_answers]
-    prediction = enc.inverse_transform(clf.predict(to_predict))[0][0]
+    prediction = enc.inverse_transform(clf.predict(to_predict))[0][0]   #Makes prediction
 
     if prediction != None:
         print("I think your dream destination is " + prediction)

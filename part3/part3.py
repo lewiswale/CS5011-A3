@@ -9,7 +9,6 @@ from sklearn.externals import joblib
 def ask_user():
     if len(sys.argv) == 2:
         file_to_use = str("../" + sys.argv[1])
-        print("File to use: " + file_to_use)
 
         df = pd.read_csv(file_to_use)
 
@@ -83,22 +82,24 @@ def make_guess(answers, enc, clf, column_count, file_to_use):
             update_data(answers, file_to_use, column_count)
 
 def update_data(answers, file_to_use, column_count):
-    dream_dest = input("Please tell me your dream destination: ")
+    dream_dest = input("Please tell me your dream destination: ")   #Gets correct answer
     yes = ""
     while yes != "y" and yes != "Y":
         yes = input("Your dream destination is " + dream_dest + " correct? (y/n): ")
         if yes == "n" or yes == "N":
-            dream_dest = input("Please tell me your dream destination: ")
+            dream_dest = ""
+            while dream_dest != "":
+                dream_dest = input("Please tell me your dream destination: ")
 
     yes = ""
     new_feature = ""
-    while yes != "n" and yes != "N":
-        yes = input("Is there a defining feature to this destination that we have not asked about? ")
+    while yes != "n" and yes != "N":        #Gets defining feature of new location
+        yes = input("Is there a defining feature to this destination that we have not asked about? (y/n) ")
         if yes == "Y" or yes == "y":
-            new_feature = input("Please tell me this new feature! ")
+            new_feature = input("Please tell me this new feature!: ")
             yes = "n"
 
-    decoded_answers = []
+    decoded_answers = []        #Decodes users answers
     for answer in answers:
         if answer == 1:
             decoded_answers.append("Yes")
@@ -107,7 +108,7 @@ def update_data(answers, file_to_use, column_count):
 
     original_file = pd.read_csv(file_to_use)
 
-    if new_feature != "":
+    if new_feature != "":   #Appends yes if new feature given, builds new column in data
         new_col_values = []
         for i in range(len(original_file)):
             new_col_values.append("No")
@@ -121,10 +122,11 @@ def update_data(answers, file_to_use, column_count):
     new_row = pd.DataFrame([decoded_answers], columns=original_file.columns)
     print("Adding new row to data:")
     print(decoded_answers)
-    new_file = original_file.append(new_row, ignore_index=True)
+    new_file = original_file.append(new_row, ignore_index=True)     #Adding new data entry
     print("Entry added.")
-    new_file.to_csv(file_to_use, index=False)
-    part1.train_classifier(file_to_use)
+    update_additions(dream_dest, new_feature, file_to_use)  #Updating additions file
+    new_file.to_csv(file_to_use, index=False)           #Overwriting original data file
+    part1.train_classifier(file_to_use)             #Retraining classifier
     print("\nClassifier retrained...")
 
 def update_additions(dream_dest, new_feature, file_to_use):
